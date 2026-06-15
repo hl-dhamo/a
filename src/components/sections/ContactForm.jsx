@@ -20,9 +20,35 @@ const INITIAL = {
 const PRODUCT_OPTIONS = PRODUCT_TYPES.filter((t) => t.id !== 'all');
 const GRADE_OPTIONS = STEEL_GRADES.filter((g) => g.id !== 'all');
 
+function validateForm(form) {
+  const errors = {};
+  const name = form.name.trim();
+  const phone = form.phone.trim();
+  const email = form.email.trim();
+  const quantity = form.quantity.trim();
+  const message = form.message.trim();
+
+  if (!name) errors.name = 'Please enter your full name';
+  else if (name.length < 2) errors.name = 'Name must be at least 2 characters';
+
+  if (!phone) errors.phone = 'Please enter your phone number';
+  else if (!/^[+\d][\d\s-]{8,}$/.test(phone)) errors.phone = 'Enter a valid phone number';
+
+  if (!email) errors.email = 'Please enter your email';
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = 'Enter a valid email address';
+
+  if (!form.productType) errors.productType = 'Please select a product type';
+  if (!form.grade) errors.grade = 'Please select a steel grade';
+  if (!quantity) errors.quantity = 'Please enter quantity or size';
+  if (!message) errors.message = 'Please enter your requirement message';
+
+  return errors;
+}
+
 export default function ContactForm() {
   const rootRef = useRef(null);
   const [form, setForm] = useState(INITIAL);
+  const [errors, setErrors] = useState({});
   const [status, setStatus] = useState('idle'); // idle | sending | success | error
   const [sentName, setSentName] = useState('');
 
@@ -48,10 +74,29 @@ export default function ContactForm() {
     { scope: rootRef },
   );
 
-  const update = (field) => (e) => setForm((prev) => ({ ...prev, [field]: e.target.value }));
+  const update = (field) => (e) => {
+    setForm((prev) => ({ ...prev, [field]: e.target.value }));
+    if (errors[field]) setErrors((prev) => ({ ...prev, [field]: '' }));
+  };
+
+  const selectField = (field, value) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+    if (errors[field]) setErrors((prev) => ({ ...prev, [field]: '' }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const validationErrors = validateForm(form);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      setStatus('idle');
+      gsap.fromTo('.form-field.has-error', { x: -6 }, { x: 0, duration: 0.35, stagger: 0.05, ease: 'power2.out' });
+      rootRef.current?.querySelector('.form-field.has-error')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    setErrors({});
     setStatus('sending');
 
     try {
@@ -65,10 +110,10 @@ export default function ContactForm() {
           Name: form.name,
           Phone: form.phone,
           Email: form.email,
-          'Product Type': form.productType || 'Not specified',
-          Grade: form.grade || 'Not specified',
-          Quantity: form.quantity || 'Not specified',
-          Message: form.message,
+          'Product Type': form.productType,
+          Grade: form.grade,
+          Quantity: form.quantity.trim(),
+          Message: form.message.trim(),
         }),
       });
 
@@ -117,7 +162,7 @@ export default function ContactForm() {
         ) : (
           <form onSubmit={handleSubmit} noValidate>
             <div className="form-grid">
-              <label className="form-field">
+              <label className={`form-field${errors.name ? ' has-error' : ''}`}>
                 <span>Full Name *</span>
                 <input
                   type="text"
@@ -125,12 +170,12 @@ export default function ContactForm() {
                   placeholder="Your name"
                   value={form.name}
                   onChange={update('name')}
-                  required
                   autoComplete="name"
                 />
+                {errors.name && <em className="field-error">{errors.name}</em>}
               </label>
 
-              <label className="form-field">
+              <label className={`form-field${errors.phone ? ' has-error' : ''}`}>
                 <span>Phone *</span>
                 <input
                   type="tel"
@@ -138,12 +183,12 @@ export default function ContactForm() {
                   placeholder="+91 98765 43210"
                   value={form.phone}
                   onChange={update('phone')}
-                  required
                   autoComplete="tel"
                 />
+                {errors.phone && <em className="field-error">{errors.phone}</em>}
               </label>
 
-              <label className="form-field form-field-full">
+              <label className={`form-field form-field-full${errors.email ? ' has-error' : ''}`}>
                 <span>Email *</span>
                 <input
                   type="email"
@@ -151,45 +196,47 @@ export default function ContactForm() {
                   placeholder="you@company.com"
                   value={form.email}
                   onChange={update('email')}
-                  required
                   autoComplete="email"
                 />
+                {errors.email && <em className="field-error">{errors.email}</em>}
               </label>
 
-              <div className="form-field form-field-full">
-                <span>Product Type</span>
+              <div className={`form-field form-field-full${errors.productType ? ' has-error' : ''}`}>
+                <span>Product Type *</span>
                 <div className="form-chips">
                   {PRODUCT_OPTIONS.map(({ id, label }) => (
                     <button
                       key={id}
                       type="button"
                       className={`chip${form.productType === label ? ' active' : ''}`}
-                      onClick={() => setForm((prev) => ({ ...prev, productType: label }))}
+                      onClick={() => selectField('productType', label)}
                     >
                       {label}
                     </button>
                   ))}
                 </div>
+                {errors.productType && <em className="field-error">{errors.productType}</em>}
               </div>
 
-              <div className="form-field form-field-full">
-                <span>Steel Grade</span>
+              <div className={`form-field form-field-full${errors.grade ? ' has-error' : ''}`}>
+                <span>Steel Grade *</span>
                 <div className="form-chips">
                   {GRADE_OPTIONS.map(({ id, label }) => (
                     <button
                       key={id}
                       type="button"
                       className={`chip${form.grade === label ? ' active' : ''}`}
-                      onClick={() => setForm((prev) => ({ ...prev, grade: label }))}
+                      onClick={() => selectField('grade', label)}
                     >
                       {label}
                     </button>
                   ))}
                 </div>
+                {errors.grade && <em className="field-error">{errors.grade}</em>}
               </div>
 
-              <label className="form-field form-field-full">
-                <span>Quantity / Size</span>
+              <label className={`form-field form-field-full${errors.quantity ? ' has-error' : ''}`}>
+                <span>Quantity / Size *</span>
                 <input
                   type="text"
                   name="quantity"
@@ -197,10 +244,11 @@ export default function ContactForm() {
                   value={form.quantity}
                   onChange={update('quantity')}
                 />
+                {errors.quantity && <em className="field-error">{errors.quantity}</em>}
               </label>
 
-              <label className="form-field form-field-full">
-                <span>Message</span>
+              <label className={`form-field form-field-full${errors.message ? ' has-error' : ''}`}>
+                <span>Message *</span>
                 <textarea
                   name="message"
                   rows={4}
@@ -208,8 +256,13 @@ export default function ContactForm() {
                   value={form.message}
                   onChange={update('message')}
                 />
+                {errors.message && <em className="field-error">{errors.message}</em>}
               </label>
             </div>
+
+            {Object.keys(errors).length > 0 && (
+              <p className="form-error">Please fill in all required fields before sending.</p>
+            )}
 
             {status === 'error' && (
               <p className="form-error">Something went wrong. Please try again or WhatsApp us directly.</p>
