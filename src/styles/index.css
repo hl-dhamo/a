@@ -268,6 +268,107 @@
   a.contact-line:hover .ic{background:rgba(255,107,61,.3);}
   a.contact-line:hover div:last-child{color:var(--orange-soft);}
 
+  /* ───── contact form ───── */
+  .contact-form-wrap{margin-top:64px;}
+  .contact-form-head{text-align:center;margin-bottom:36px;}
+  .contact-form-head .sec-sub{margin-inline:auto;}
+  .contact-form-card{
+    background:linear-gradient(155deg,rgba(255,255,255,.09),rgba(255,255,255,.03));
+    border:1px solid rgba(200,210,222,.2);
+    border-radius:24px;
+    padding:clamp(28px,4vw,48px);
+    backdrop-filter:blur(8px);
+    position:relative;
+    overflow:hidden;
+  }
+  .contact-form-card::before{
+    content:"";
+    position:absolute;inset:0;
+    background:repeating-linear-gradient(115deg,rgba(255,255,255,.025) 0 2px,transparent 2px 6px);
+    pointer-events:none;
+  }
+  .form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+    position:relative;
+  }
+  .form-field{display:flex;flex-direction:column;gap:8px;}
+  .form-field-full{grid-column:1/-1;}
+  .form-field span{
+    font-size:.78rem;font-weight:600;text-transform:uppercase;
+    letter-spacing:1.5px;color:var(--steel-light);
+  }
+  .form-field input,
+  .form-field select,
+  .form-field textarea{
+    width:100%;
+    padding:14px 16px;
+    border-radius:10px;
+    border:1px solid rgba(200,210,222,.25);
+    background:rgba(16,35,65,.55);
+    color:var(--white);
+    font-family:'Inter',sans-serif;
+    font-size:.92rem;
+    transition:border-color .3s,box-shadow .3s,transform .25s,background .3s;
+  }
+  .form-field input::placeholder,
+  .form-field textarea::placeholder{color:rgba(200,210,222,.45);}
+  .form-field select{
+    cursor:pointer;
+    appearance:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23C8D2DE' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;
+    background-position:right 16px center;
+    padding-right:40px;
+  }
+  .form-field select option{background:var(--navy-dark);color:var(--white);}
+  .form-field input:focus,
+  .form-field select:focus,
+  .form-field textarea:focus{
+    outline:none;
+    border-color:rgba(255,107,61,.65);
+    box-shadow:0 0 0 3px rgba(255,107,61,.15),0 4px 20px rgba(255,107,61,.12);
+    transform:translateY(-2px);
+    background:rgba(16,35,65,.75);
+  }
+  .form-field textarea{resize:vertical;min-height:110px;}
+  .form-submit{
+    width:100%;margin-top:28px;justify-content:center;
+    position:relative;overflow:hidden;
+  }
+  .form-submit:disabled{opacity:.75;cursor:not-allowed;transform:none;}
+  .form-spinner{
+    width:18px;height:18px;border:2px solid rgba(255,255,255,.3);
+    border-top-color:#fff;border-radius:50%;
+    animation:formSpin .7s linear infinite;
+  }
+  @keyframes formSpin{to{transform:rotate(360deg)}}
+  .form-error{
+    margin-top:16px;padding:12px 16px;border-radius:10px;
+    background:rgba(255,80,80,.12);border:1px solid rgba(255,80,80,.35);
+    color:#ffb4b4;font-size:.88rem;text-align:center;
+  }
+  .form-success{
+    text-align:center;padding:40px 20px;position:relative;
+  }
+  .success-icon{
+    width:72px;height:72px;margin:0 auto 20px;
+    animation:successPop .6s ease;
+  }
+  .success-icon svg{width:100%;height:100%;}
+  @keyframes successPop{
+    0%{transform:scale(0);opacity:0}
+    60%{transform:scale(1.15)}
+    100%{transform:scale(1);opacity:1}
+  }
+  .form-success h3{
+    font-family:'Oswald',sans-serif;font-size:1.6rem;
+    text-transform:uppercase;margin-bottom:10px;color:#fff;
+  }
+  .form-success p{color:var(--silver);margin-bottom:24px;line-height:1.6;}
+  .form-success .btn-ghost{margin-inline:auto;}
+
   /* ───── footer ───── */
   footer{
     position:relative;z-index:1;padding:34px 0;text-align:center;
@@ -342,6 +443,8 @@
     .assembly-caption{font-size:.95rem;letter-spacing:1px;margin-top:10px;height:26px;}
     .assembly-progress{margin-top:12px;}
     .contact-line{font-size:.88rem;}
+    .form-grid{grid-template-columns:1fr;gap:16px;}
+    .contact-form-wrap{margin-top:48px;}
     .wa-btn{width:52px;height:52px;right:16px;bottom:16px;}
     .wa-btn svg{width:27px;height:27px;}
     footer{font-size:.75rem;padding:26px 0;}

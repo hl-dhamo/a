@@ -1,4 +1,5 @@
 import { SITE } from '../../config/site';
+import ContactForm from './ContactForm';
 
 export default function Contact() {
   return (
@@ -58,6 +59,8 @@ export default function Contact() {
             </a>
           </div>
         </div>
+
+        <ContactForm />
       </div>
     </section>
   );
