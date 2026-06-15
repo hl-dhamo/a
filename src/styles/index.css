@@ -271,7 +271,7 @@
   /* ───── contact form ───── */
   .contact-form-wrap{margin-top:64px;}
   .contact-form-head{text-align:center;margin-bottom:36px;}
-  .contact-form-head .sec-sub{margin-inline:auto;}
+  .contact-form-head .sec-sub{margin-inline:auto;color:var(--silver);}
   .contact-form-card{
     background:linear-gradient(155deg,rgba(255,255,255,.09),rgba(255,255,255,.03));
     border:1px solid rgba(200,210,222,.2);
@@ -296,41 +296,35 @@
   .form-field{display:flex;flex-direction:column;gap:8px;}
   .form-field-full{grid-column:1/-1;}
   .form-field span{
-    font-size:.78rem;font-weight:600;text-transform:uppercase;
-    letter-spacing:1.5px;color:var(--steel-light);
+    font-size:.82rem;font-weight:700;text-transform:uppercase;
+    letter-spacing:1.5px;color:#fff;
   }
   .form-field input,
-  .form-field select,
   .form-field textarea{
     width:100%;
     padding:14px 16px;
     border-radius:10px;
-    border:1px solid rgba(200,210,222,.25);
-    background:rgba(16,35,65,.55);
-    color:var(--white);
+    border:1px solid rgba(200,210,222,.35);
+    background:rgba(16,35,65,.65);
+    color:#fff;
     font-family:'Inter',sans-serif;
-    font-size:.92rem;
+    font-size:.95rem;
+    font-weight:500;
     transition:border-color .3s,box-shadow .3s,transform .25s,background .3s;
   }
   .form-field input::placeholder,
-  .form-field textarea::placeholder{color:rgba(200,210,222,.45);}
-  .form-field select{
-    cursor:pointer;
-    appearance:none;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23C8D2DE' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
-    background-repeat:no-repeat;
-    background-position:right 16px center;
-    padding-right:40px;
+  .form-field textarea::placeholder{color:rgba(200,210,222,.65);}
+  .form-chips{
+    display:flex;flex-wrap:wrap;gap:10px;margin-top:4px;
   }
-  .form-field select option{background:var(--navy-dark);color:var(--white);}
+  .form-chips .chip{font-size:.85rem;}
   .form-field input:focus,
-  .form-field select:focus,
   .form-field textarea:focus{
     outline:none;
-    border-color:rgba(255,107,61,.65);
-    box-shadow:0 0 0 3px rgba(255,107,61,.15),0 4px 20px rgba(255,107,61,.12);
+    border-color:rgba(255,107,61,.75);
+    box-shadow:0 0 0 3px rgba(255,107,61,.2),0 4px 20px rgba(255,107,61,.15);
     transform:translateY(-2px);
-    background:rgba(16,35,65,.75);
+    background:rgba(16,35,65,.85);
   }
   .form-field textarea{resize:vertical;min-height:110px;}
   .form-submit{

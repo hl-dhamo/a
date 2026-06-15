@@ -156,29 +156,37 @@ export default function ContactForm() {
                 />
               </label>
 
-              <label className="form-field">
+              <div className="form-field form-field-full">
                 <span>Product Type</span>
-                <select name="productType" value={form.productType} onChange={update('productType')}>
-                  <option value="">Select product</option>
+                <div className="form-chips">
                   {PRODUCT_OPTIONS.map(({ id, label }) => (
-                    <option key={id} value={label}>
+                    <button
+                      key={id}
+                      type="button"
+                      className={`chip${form.productType === label ? ' active' : ''}`}
+                      onClick={() => setForm((prev) => ({ ...prev, productType: label }))}
+                    >
                       {label}
-                    </option>
+                    </button>
                   ))}
-                </select>
-              </label>
+                </div>
+              </div>
 
-              <label className="form-field">
+              <div className="form-field form-field-full">
                 <span>Steel Grade</span>
-                <select name="grade" value={form.grade} onChange={update('grade')}>
-                  <option value="">Select grade</option>
+                <div className="form-chips">
                   {GRADE_OPTIONS.map(({ id, label }) => (
-                    <option key={id} value={label}>
+                    <button
+                      key={id}
+                      type="button"
+                      className={`chip${form.grade === label ? ' active' : ''}`}
+                      onClick={() => setForm((prev) => ({ ...prev, grade: label }))}
+                    >
                       {label}
-                    </option>
+                    </button>
                   ))}
-                </select>
-              </label>
+                </div>
+              </div>
 
               <label className="form-field form-field-full">
                 <span>Quantity / Size</span>
